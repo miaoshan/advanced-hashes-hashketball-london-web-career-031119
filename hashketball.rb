@@ -175,9 +175,9 @@ end
 
 def team_colors(name)
   result=nil
-  game_hash.each do |team, team_details_hash|
-    if team_details_hash[:team_name]== name
-      result= team_details_hash[:colors]
+  game_hash.each do |team, details_hash|
+    if details_hash[:team_name]== name
+      result= details_hash[:colors]
     end
   end
   result
@@ -191,9 +191,9 @@ end
 
 def player_numbers (team_name)
   player_numbers_list = []
-  game_hash.each do |team, team_details_hash|
-    if team_details_hash[:team_name] == team_name
-      team_details_hash[:players].each do |player|
+  game_hash.each do |team, details_hash|
+    if details_hash[:team_name] == team_name
+      details_hash[:players].each do |player|
         player.each do |key, value|
           if key == :number
             player_numbers_list << value
@@ -209,8 +209,8 @@ end
 
 def player_stats(player_name)
   player_stats = {}
-  game_hash.each do |team, team_details_hash|
-    team_details_hash[:players].each do |stats|
+  game_hash.each do |team, details_hash|
+    details_hash[:players].each do |stats|
         if stats[:name] == player_name
         stats.delete(:name)
         player_stats = stats
@@ -223,8 +223,8 @@ end
   def big_shoe_rebounds
     biggest_shoe_player=0
     rebounds=0
-    game_hash.each do |team, team_details_hash|
-      team_details_hash [:players].each do |stats|
+    game_hash.each do |team, details_hash|
+      details_hash [:players].each do |stats|
         if stats[:shoe] > biggest_shoe_player
           biggest_shoe_player=stats[:shoe]
           rebounds=stats[:rebounds]
