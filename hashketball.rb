@@ -2,7 +2,7 @@ require 'pry'
 
 
  def game_hash
-  {
+ {
   :home => {
     :team_name => "Brooklyn Nets",
     :colors => ["Black", "White"],
@@ -125,32 +125,14 @@ require 'pry'
       }
     ]
   }
-}
-end
+ }
+ end
 
-
-
-
-#def num_points_scored(name)
-#  points = nil
-#  game_hash.each do|team, details_game_hash|
-#  all_players = details_game_hash [:players]
-  # .merge doesnt work
-  #all_players = game_hash[:home][:players].merge(game_hash[:away][:players])
-  #all_players.each do |player_details_hash|
-  #  if player_details_hash[:player_name] == name
-  #    points = player_details_hash[:points]
-  #  end
-#  end
-#end
-#  points
-# end
 
 def num_points_scored (name)
   result = nil
-
-   game_hash.each do |team, details_hash|
-    players_array = details_hash[:players]
+    game_hash.each do |team, details_hash|
+    players_array= details_hash[:players]  #home or away
       players_array.each do |player_details_hash|
         if player_details_hash[:name] == name
           result = player_details_hash[:points]
@@ -184,8 +166,8 @@ def team_colors(name)
 end
 
 def team_names
-  game_hash.collect do |team, team_details_hash|
-    team_details_hash[:team_name]
+  game_hash.collect do |team, details_hash|
+    details_hash[:team_name]
   end
 end
 
@@ -233,3 +215,72 @@ end
     end
     return rebounds
   end
+
+
+ def most_points_scored
+    player=nil
+    most_points=0
+    game_hash.each do |team, details_hash|
+      details_hash[:players].each do |value|
+        if value[:points]>most_points
+          most_points=value[:points]
+          player=value[:name]
+        end
+      end
+    end
+    player
+  end
+
+
+  def winning_team
+     home_points=0
+     away_points=0
+     game_hash[:home][:players].each do |value|
+       home_points+=value[:points]
+     end
+     game_hash[:away][:players].each do |value|
+       away_points+=value[:points]
+     end
+     if home_points>away_points
+       game_hash[:home][:team_name]
+     elsif away_points>home_points
+       game_hash[:away][:team_name]
+     else
+       "The two teams tie."
+     end
+   end
+
+
+   def player_with_longest_name
+       player_name= nil
+       longest_word=0
+       game_hash.each do |team, details_hash|
+       details_hash[:players].each do |value|
+       if value[:name].length>longest_word
+         longest_word=value[:name]
+         player_name= value[:name]
+       end
+     end
+   end
+   player_name
+ end
+
+ def long_name_steals_a_ton?
+   player_name=nil
+   longest_word =0
+   most_steals=0
+   game_hash.each do |team,details_hash|
+     details_hash[:players].each do |value|
+       if value[:name].length >longest_word
+         longest_word=value[:name]
+         player=value
+      end
+      if value[:steals]>most_steals
+        most_steals=value[:steals]
+       end
+     end
+   end
+      if player[:steals]==most_steals
+        true
+      end
+end
